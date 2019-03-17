@@ -1,20 +1,23 @@
 #!/usr/bin/env python
 import sys
 
+from Config import Pyconfig
+from Logger.Logging import PyLogger
 from includes.Gearman_Worker import Gearman_Worker
 from includes.daemon import Daemon
-
-# Change these settings
-GearmanIP = ['192.168.2.120:4730']
-GearmanQueue = 'elastic'
-# Dont edit below this line;
 
 
 class ElasticGearman(Daemon):
 
     def run(self):
         print('Running...')
-        gearman = Gearman_Worker(GearmanIP, GearmanQueue)
+        self.logger = PyLogger('Elastic_gearman').logger
+        cfg = Pyconfig(self.logger)
+        gearman = Gearman_Worker(self.logger,
+                                 cfg.GearmanIP,
+                                 cfg.Gearman_Queue,
+                                 cfg.Gearman_secret,
+                                 cfg.Elastic_Server)
         gearman.StartWorker()
 
 

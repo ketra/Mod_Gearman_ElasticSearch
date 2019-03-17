@@ -15,10 +15,11 @@ from Perfdata_Processor import Perfdata_Processor
 
 class Gearman_Worker:
 
-    def __init__(self, gearman_ip, gearman_queue):
+    def __init__(self, logger, gearman_ip, gearman_queue, secret, elastic):
+        self.logger = logger
         self.gm_worker = gearman.GearmanWorker(gearman_ip)
-        self.secret = 'vQsCyDObFsYSGeh1oZ41Br6JSO5V6VaN'
-        self.elastic = ElasticWorker('http://192.168.2.120')
+        self.secret = secret
+        self.elastic = ElasticWorker(self.logger, elastic)
         self.gm_worker.register_task(gearman_queue, self.task_listener_reverse_inflight)
         pass
 
@@ -33,7 +34,7 @@ class Gearman_Worker:
             #       print(formatted)
             if formatted['DATATYPE'] == 'SERVICEPERFDATA':
                 perfdata = Perfdata_Processor.parse_perfdata(formatted['SERVICEPERFDATA'])
-                print(
+                self.logger.debug(
                     'host: {host}, service {service} has performancedata {perfdata}'.format(host=formatted['HOSTNAME'],
                                                                                             service=formatted[
                                                                                                 'SERVICEDESC'],
@@ -48,12 +49,12 @@ class Gearman_Worker:
                     self.elastic.insert_service_data(data)
             else:
                 perf_data = Perfdata_Processor.parse_perfdata(formatted['HOSTPERFDATA'])
-                print('host: {host}, has performance data {perf_data}'.format(
+                self.logger.debug('host: {host}, has performance data {perf_data}'.format(
                     host=formatted['HOSTNAME'],
                     perf_data=perf_data))
             return decrypted
         except Exception as e:
-            print(e)
+            self.logger.debug(e)
             return ""
 
     def StartWorker(self):

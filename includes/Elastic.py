@@ -13,7 +13,8 @@ from Perfdata_Processor import Perfdata_Processor
 
 class ElasticWorker:
 
-    def __init__(self, elastic_search_ip):
+    def __init__(self, logger, elastic_search_ip):
+        self.logger = logger
         self.es = Elasticsearch(elastic_search_ip)
         pass
 
@@ -31,4 +32,4 @@ class ElasticWorker:
             index="service_perfdata_" + datetime.datetime.now().strftime("%Y_%m"),
             body=doc,
             doc_type='_doc')
-        print(res)
+        # print(res)
