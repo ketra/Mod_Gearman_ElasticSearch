@@ -17,7 +17,7 @@ class ElasticGearman(Daemon):
     def run(self):
         print('Running...')
         gearman = Gearman_Worker(GearmanIP, GearmanQueue)
-        gearman.gm_worker()
+        gearman.StartWorker()
 
 
 if __name__ == "__main__":
