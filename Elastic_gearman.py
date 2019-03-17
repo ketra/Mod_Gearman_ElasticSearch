@@ -1,14 +1,12 @@
 #!/usr/bin/env python
 import sys
 
-from daemon import Daemon
 from includes.Gearman_Worker import Gearman_Worker
+from includes.daemon import Daemon
 
 # Change these settings
 GearmanIP = ['192.168.2.120:4730']
 GearmanQueue = 'elastic'
-
-
 # Dont edit below this line;
 
 
