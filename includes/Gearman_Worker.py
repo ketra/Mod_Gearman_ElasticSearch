@@ -32,22 +32,22 @@ class Gearman_Worker:
             formatted = Perfdata_Processor.extract_fields(decrypted)
             #       print(formatted)
             if formatted['DATATYPE'] == 'SERVICEPERFDATA':
-                perfdata = Perfdata_Processor.extract_perdata(formatted['SERVICEPERFDATA'])
+                perfdata = Perfdata_Processor.parse_perfdata(formatted['SERVICEPERFDATA'])
                 print(
                     'host: {host}, service {service} has performancedata {perfdata}'.format(host=formatted['HOSTNAME'],
                                                                                             service=formatted[
                                                                                                 'SERVICEDESC'],
                                                                                             perfdata=perfdata))
-                for value in perfdata:
-                    data = {}
+                for (key, value) in perfdata:
+                    data = dict()
                     data['timestamp'] = formatted['TIMET']
                     data['hostname'] = formatted['HOSTNAME']
                     data['service'] = formatted['SERVICEDESC']
-                    data['label'] = value
+                    data['label'] = key
                     data['perfdata'] = perfdata[value]
                     self.elastic.insert_service_data(data)
             else:
-                perf_data = Perfdata_Processor.extract_perdata(formatted['HOSTPERFDATA'])
+                perf_data = Perfdata_Processor.parse_perfdata(formatted['HOSTPERFDATA'])
                 print('host: {host}, has performance data {perf_data}'.format(
                     host=formatted['HOSTNAME'],
                     perf_data=perf_data))

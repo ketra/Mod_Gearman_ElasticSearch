@@ -14,6 +14,45 @@ class Perfdata_Processor:
         pass
 
     @staticmethod
+    def normalize_to_unit(value, unit):
+        """Normalize the value to the unit returned.
+        We use base-1000 for second-based units, and base-1024 for
+        byte-based units. Sadly, the Nagios-Plugins specification doesn't
+        disambiguate base-1000 (KB) and base-1024 (KiB).
+        """
+        if unit == 'ms':
+            return value / 1000.0
+        if unit == 'us':
+            return value / 1000000.0
+        if unit == 'KB':
+            return value * 1024
+        if unit == 'MB':
+            return value * 1024 * 1024
+        if unit == 'GB':
+            return value * 1024 * 1024 * 1024
+        if unit == 'TB':
+            return value * 1024 * 1024 * 1024 * 1024
+
+    @staticmethod
+    def parse_perfdata(s):
+        """Parse performance data from a perfdata string
+        """
+        metrics = []
+        counters = re.findall(UNIT_REGEX, s)
+
+        for (key, value, uom, warn, crit, min, max) in counters:
+            try:
+                norm_value = Perfdata_Processor.normalize_to_unit(float(value), uom)
+                metrics.append((key, norm_value))
+            except ValueError:
+                pass
+            #    self.log.warning(
+            #        "Couldn't convert value '{value}' to float".format(
+            #            value=value))
+
+        return metrics
+
+    @staticmethod
     def extract_fields(line):
         """Extract the key/value fields from a line of performance gearman data
         """
