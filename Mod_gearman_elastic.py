@@ -1,14 +1,15 @@
 #!/usr/bin/env python
-import gearman
 import base64
-from Crypto.Cipher import AES
-from elasticsearch import Elasticsearch
 import datetime
 
+import gearman
+from Crypto.Cipher import AES
+from elasticsearch import Elasticsearch
+
 ###### Change these settings
-GearmanIP = ['0.0.0.0:4730']
-ElasticSearchIP = ['http://0.0.0.0']
-Secret = 'ChangeMe'
+GearmanIP = ['192.168.2.120:4730']
+ElasticSearchIP = ['http://192.168.2.120']
+Secret = 'vQsCyDObFsYSGeh1oZ41Br6JSO5V6VaN'
 GearmanQueue = 'elastic'
 ##### Dont edit below this line;
 
@@ -29,6 +30,7 @@ def _extract_fields(line):
 
     return acc
 
+
 def _extract_perdata(line):
     """Extract Key/Value fields for the performance data"""
     perfdata = {}
@@ -40,11 +42,13 @@ def _extract_perdata(line):
             perfdata[key] = value
     return perfdata
 
+
 def insert_service_data(data):
     """insert PerformanceData into Elasticsearch"""
     doc = {'server': data['hostname'], 'service': data['service'], 'timestamp': data['timestamp'], 'metric': {'name' : data['label'], 'data': data['perfdata']} }
-    res = es.index(index="service_perfdata" + datetime.datetime.now().strftime("%Y%m"), body=doc, doc_type='doc')
+    res = es.index(index="service_perfdata" + datetime.datetime.now().strftime("%Y%m"), body=doc, doc_type='_doc')
     print(res)
+
 
 # See gearman/job.py to see attributes on the GearmanJob
 # Send back a reversed version of the 'data' string through WORK_DATA instead of WORK_COMPLETE
