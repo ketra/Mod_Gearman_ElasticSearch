@@ -22,10 +22,10 @@ class ElasticGearman(Daemon):
 
 
 if __name__ == "__main__":
-    daemon = ElasticGearman('/omd/sites/Monitoring/var/run/ElasticGearman.pid',
-                            '/omd/sites/Monitoring/var/log/ElasticGearman-console.log',
-                            '/omd/sites/Monitoring/var/log/ElasticGearman-console.log',
-                            '/omd/sites/Monitoring/var/log/ElasticGearman-console.log')
+    daemon = ElasticGearman('/var/run/ElasticGearman.pid',
+                            '/var/log/ElasticGearman-console.log',
+                            '/var/log/ElasticGearman-console.log',
+                            '/var/log/ElasticGearman-console.log')
     if len(sys.argv) == 2:
         if 'start' == sys.argv[1]:
             daemon.start()

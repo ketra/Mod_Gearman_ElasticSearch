@@ -59,8 +59,8 @@ class PyLogger:
         """
         try:
             config = ConfigParser.ConfigParser()
-            path = os.path.join(os.path.abspath(os.path.dirname(sys.argv[0])), 'Config', 'Config.cfg')
-            # path = os.path.join('/etc/TOON2SQL', 'Config.cfg')
+            # path = os.path.join(os.path.abspath(os.path.dirname(sys.argv[0])), 'Config', 'Config.cfg')
+            path = os.path.join('/etc/Elastic_Gearman', 'Config.cfg')
             print(sys.argv[0])
             config.read(path)
             self.location = config.get('Logging', 'Location')

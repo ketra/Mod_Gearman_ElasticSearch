@@ -6,7 +6,8 @@ Version :
 """
 import re
 
-UNIT_REGEX = re.compile('([0-9.]+)([^0-9.]+)?')
+# UNIT_REGEX = re.compile('([0-9.]+)([^0-9.]+)?')
+UNIT_REGEX = r"([^\s]+|'[^']+')=([-.\d]+)(c|s|ms|us|B|KB|MB|GB|TB|%)?" r"(?:;([-.\d]+))?(?:;([-.\d]+))?(?:;([-.\d]+))?(?:;([-.\d]+))?"
 
 
 class Perfdata_Processor:

@@ -2,14 +2,13 @@ import ConfigParser
 import os
 import sys
 
-
 class Pyconfig:
     def __init__(self, pylogger):
         self._config = ConfigParser.ConfigParser()
         self._log = pylogger
         pylogger.debug('Getting Config')
-        path = os.path.join(os.path.abspath(os.path.dirname(sys.argv[0])), 'Config', 'Config.cfg')
-        # path = os.path.join('/etc/TOON2SQL', 'Config.cfg')
+        # path = os.path.join(os.path.abspath(os.path.dirname(sys.argv[0])), 'Config', 'Config.cfg')
+        path = os.path.join('/etc/Elastic_Gearman', 'Config.cfg')
         self._config.read(path)
         self.Read()
 
