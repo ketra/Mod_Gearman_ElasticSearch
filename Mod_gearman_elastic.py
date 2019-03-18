@@ -43,7 +43,7 @@ def _extract_perdata(line):
 def insert_service_data(data):
     """insert PerformanceData into Elasticsearch"""
     doc = {'server': data['hostname'], 'service': data['service'], 'timestamp': data['timestamp'], 'metric': {'name' : data['label'], 'data': data['perfdata']} }
-    res = es.index(index="service_perfdata" + datetime.datetime.now().strftime("%Y%m"), body=doc, doc_type='doc')
+    res = es.index(index="service_perfdata" + datetime.datetime.now().strftime("%Y%m"), body=doc, doc_type='_doc')
     print(res)
 
 # See gearman/job.py to see attributes on the GearmanJob
