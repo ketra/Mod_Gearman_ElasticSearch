@@ -19,20 +19,22 @@ class Perfdata_Processor:
         """Normalize the value to the unit returned.
         We use base-1000 for second-based units, and base-1024 for
         byte-based units. Sadly, the Nagios-Plugins specification doesn't
-        disambiguate base-1000 (KB) and base-1024 (KiB).
-        """
+        disambiguate base-1000 (KB) and base-1024 (KiB)."""
+
         if unit == 'ms':
             return value / 1000.0
-        if unit == 'us':
+        elif unit == 'us':
             return value / 1000000.0
-        if unit == 'KB':
+        elif unit == 'KB':
             return value * 1024
-        if unit == 'MB':
+        elif unit == 'MB':
             return value * 1024 * 1024
-        if unit == 'GB':
+        elif unit == 'GB':
             return value * 1024 * 1024 * 1024
-        if unit == 'TB':
+        elif unit == 'TB':
             return value * 1024 * 1024 * 1024 * 1024
+        else:
+            return value
 
     @staticmethod
     def parse_perfdata(s):
